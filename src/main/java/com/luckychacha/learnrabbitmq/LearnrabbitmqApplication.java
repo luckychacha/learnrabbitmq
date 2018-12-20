@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class LearnrabbitmqApplication {
 
-    final static String queueName = "hello";
-
+    // queues
     @Bean
     public Queue helloQueue() {
         return new Queue("hello");
@@ -22,12 +21,12 @@ public class LearnrabbitmqApplication {
 
     @Bean
     public Queue queueMessage() {
-        return new Queue("message");
+        return new Queue("topic.message");
     }
 
     @Bean
     public Queue queueMessages() {
-        return new Queue("messages");
+        return new Queue("topic.messages");
     }
 
     @Bean
@@ -45,6 +44,7 @@ public class LearnrabbitmqApplication {
         return new Queue("fanout.C");
     }
 
+    // exchanges
     @Bean
     TopicExchange exchange() {
         return new TopicExchange("exchange");
@@ -55,14 +55,15 @@ public class LearnrabbitmqApplication {
         return new FanoutExchange("fanoutExchange");
     }
 
+    // bind queue to exchange
     @Bean
     Binding bindingExchangeMessage(Queue queueMessage, TopicExchange exchange) {
-        return BindingBuilder.bind(queueMessage).to(exchange).with("message");
+        return BindingBuilder.bind(queueMessage).to(exchange).with("topic.message");
     }
 
     @Bean
     Binding bindingExchangeMessages(Queue queueMessages, TopicExchange exchange) {
-        return BindingBuilder.bind(queueMessages).to(exchange).with("#");
+        return BindingBuilder.bind(queueMessages).to(exchange).with("topic.#");
     }
 
     @Bean
