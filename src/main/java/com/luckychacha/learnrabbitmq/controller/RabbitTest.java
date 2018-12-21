@@ -1,5 +1,6 @@
 package com.luckychacha.learnrabbitmq.controller;
 
+import com.luckychacha.learnrabbitmq.fanout.FanoutSender;
 import com.luckychacha.learnrabbitmq.hello.HelloReceiver1;
 import com.luckychacha.learnrabbitmq.hello.HelloSender1;
 import com.luckychacha.learnrabbitmq.hello.HelloSender2;
@@ -25,6 +26,9 @@ public class RabbitTest {
 
     @Autowired
     private TopicSender topicSender;
+
+    @Autowired
+    private FanoutSender fanoutSender;
     /**
      * oneToOne
      */
@@ -65,5 +69,10 @@ public class RabbitTest {
     @PostMapping("sendTopic")
     public void sendTopic() {
         topicSender.send();
+    }
+
+    @PostMapping("fanout")
+    public void sendFanout() {
+        fanoutSender.send();
     }
 }
