@@ -1,5 +1,6 @@
 package com.luckychacha.learnrabbitmq.controller;
 
+import com.luckychacha.learnrabbitmq.callback.CallBackSender;
 import com.luckychacha.learnrabbitmq.fanout.FanoutSender;
 import com.luckychacha.learnrabbitmq.hello.HelloReceiver1;
 import com.luckychacha.learnrabbitmq.hello.HelloSender1;
@@ -29,6 +30,9 @@ public class RabbitTest {
 
     @Autowired
     private FanoutSender fanoutSender;
+
+    @Autowired
+    private CallBackSender callBackSender;
     /**
      * oneToOne
      */
@@ -74,5 +78,10 @@ public class RabbitTest {
     @PostMapping("fanout")
     public void sendFanout() {
         fanoutSender.send();
+    }
+
+    @PostMapping("callback")
+    public void callback() {
+        callBackSender.send();
     }
 }
