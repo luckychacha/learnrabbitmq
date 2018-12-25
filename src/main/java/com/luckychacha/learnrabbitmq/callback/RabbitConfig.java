@@ -7,6 +7,8 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
@@ -125,21 +127,42 @@ public class RabbitConfig {
     }
 
     @Bean
-    public SimpleMessageListenerContainer messageListenerContainer() {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());
-        container.setQueues(helloQueue(), userQueue(), queueMessage(), queueMessages(), AMessage(), BMessage(), CMessage());
-        container.setExposeListenerChannel(true);
-        container.setConcurrentConsumers(1);
-        container.setMaxConcurrentConsumers(1);
+    public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, ChannelAwareMessageListener listener) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+
+        // 指定消费者
+        container.setMessageListener(listener);
+
+        // 设置消费者的 ack 模式为手动确认模式
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-        container.setMessageListener(new ChannelAwareMessageListener() {
-            @Override
-            public void onMessage(Message message, Channel channel) throws Exception {
-                byte[] body = message.getBody();
-                System.out.println("消费端接收到消息 : " + new String(body));
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            }
-        });
+
+        container.setPrefetchCount(300);
+
         return container;
     }
+
+    @Bean
+    public MessageConverter messageConverter() {
+        return new SimpleMessageConverter();
+    }
+
+//    @Bean
+//    public SimpleMessageListenerContainer messageListenerContainer() {
+//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());
+//        container.setQueues(helloQueue(), userQueue(), queueMessage(), queueMessages(), AMessage(), BMessage(), CMessage());
+//        container.setExposeListenerChannel(true);
+//        container.setConcurrentConsumers(1);
+//        container.setMaxConcurrentConsumers(1);
+//        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+//        container.setMessageListener(new ChannelAwareMessageListener() {
+//            @Override
+//            public void onMessage(Message message, Channel channel) throws Exception {
+//                byte[] body = message.getBody();
+//                System.out.println("消费端接收到消息 : " + new String(body));
+//                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+//            }
+//        });
+//        return container;
+//    }
 }

@@ -25,6 +25,10 @@ public class CallBackSender implements RabbitTemplate.ConfirmCallback {
 
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-        System.out.println("callback confirm:" + correlationData.getId());
+        if (ack) {
+            System.out.println("callback confirm success:" + correlationData.getId());
+        } else {
+            System.out.println("callback confirm fail:" + correlationData.getId());
+        }
     }
 }
