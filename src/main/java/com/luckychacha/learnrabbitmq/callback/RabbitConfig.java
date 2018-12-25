@@ -123,14 +123,16 @@ public class RabbitConfig {
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public RabbitTemplate rabbitTemplatenew() {
-        return new RabbitTemplate(connectionFactory());
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
+        rabbitTemplate.setMandatory(true);
+        return rabbitTemplate;
     }
 
     @Bean
     public SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, ChannelAwareMessageListener listener) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-
+        container.setQueues(helloQueue(), userQueue(), queueMessage(), queueMessages(), AMessage(), BMessage(), CMessage());
         // 指定消费者
         container.setMessageListener(listener);
 
