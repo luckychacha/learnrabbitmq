@@ -1,10 +1,10 @@
 package com.luckychacha.learnrabbitmq.callback;
 
-import com.rabbitmq.client.Channel;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -14,15 +14,14 @@ public class CallBackSender implements RabbitTemplate.ConfirmCallback {
     @Autowired
     private RabbitTemplate rabbitTemplatenew;
 
-    public void send(Channel channel) throws Exception {
-        channel.txSelect();
-        rabbitTemplatenew.setConfirmCallback(this);
+    @Transactional(rollbackFor = Exception.class)
+    public void send() {
+        this.rabbitTemplatenew.setConfirmCallback(this);
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
         String msg = "callback sender: i am provider!!! id:" + correlationData.getId();
         System.out.println(msg);
         System.out.println("callback sender task uuid is :" + correlationData.getId());
         this.rabbitTemplatenew.convertAndSend("exchange", "topic.messages", msg, correlationData );
-        channel.txCommit();
     }
 
     @Override

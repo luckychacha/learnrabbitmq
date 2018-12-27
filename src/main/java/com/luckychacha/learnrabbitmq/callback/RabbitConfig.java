@@ -39,17 +39,6 @@ public class RabbitConfig {
     @Value("${spring.rabbitmq.publisher-confirms}")
     private Boolean publisherConfirms;
 
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setAddresses(addresses + ":" + port);
-        connectionFactory.setUsername(username);
-        connectionFactory.setPassword(password);
-        connectionFactory.setVirtualHost(virtualHost);
-        connectionFactory.setPublisherConfirms(publisherConfirms);
-        return connectionFactory;
-    }
-
     // queues
     @Bean
     public Queue helloQueue() {
@@ -124,34 +113,28 @@ public class RabbitConfig {
     }
 
     @Bean
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setAddresses(addresses + ":" + port);
+        connectionFactory.setUsername(username);
+        connectionFactory.setPassword(password);
+        connectionFactory.setVirtualHost(virtualHost);
+        connectionFactory.setPublisherConfirms(publisherConfirms);
+        return connectionFactory;
+    }
+
+    @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public RabbitTemplate rabbitTemplatenew() {
-        return new RabbitTemplate(connectionFactory());
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
+        rabbitTemplate.setChannelTransacted(true);
+        return rabbitTemplate;
     }
 
     @Bean
     public MessageConverter messageConverter() {
         return new SimpleMessageConverter();
     }
-
-//    @Bean
-//    public SimpleMessageListenerContainer messageListenerContainer() {
-//        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory());
-//        container.setQueues(helloQueue(), userQueue(), queueMessage(), queueMessages(), AMessage(), BMessage(), CMessage());
-//        container.setExposeListenerChannel(true);
-//        container.setConcurrentConsumers(1);
-//        container.setMaxConcurrentConsumers(1);
-//        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-//        container.setMessageListener(new ChannelAwareMessageListener() {
-//            @Override
-//            public void onMessage(Message message, Channel channel) throws Exception {
-//                byte[] body = message.getBody();
-//                System.out.println("消费端接收到消息 : " + new String(body));
-//                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-//            }
-//        });
-//        return container;
-//    }
 
     @Bean
     public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory connectionFactory){

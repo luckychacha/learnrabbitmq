@@ -81,7 +81,7 @@ public class RabbitTest {
     }
 
     @PostMapping("callback")
-    public void callback() {
+    public void callback() throws Exception  {
         callBackSender.send();
     }
 }
