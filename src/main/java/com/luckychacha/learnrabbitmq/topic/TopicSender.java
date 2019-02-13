@@ -17,6 +17,7 @@ public class TopicSender {
 
         String msg2 = "i am topic.messages msg-----";
         System.out.println("sender2:" + msg2);
+        //exchange, routingKey
         this.rabbitTemplate.convertAndSend("exchange", "topic.messages", msg2);
 
     }

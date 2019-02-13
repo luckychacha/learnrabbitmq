@@ -57,7 +57,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue queueMessages() {
-        return new Queue("topic.messages");
+        return new Queue("topic.messages", true);
     }
 
     @Bean
@@ -128,6 +128,7 @@ public class RabbitConfig {
     public RabbitTemplate rabbitTemplatenew() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         rabbitTemplate.setChannelTransacted(true);
+        rabbitTemplate
         return rabbitTemplate;
     }
 
