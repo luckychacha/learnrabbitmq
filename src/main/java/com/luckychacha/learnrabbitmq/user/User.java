@@ -2,6 +2,9 @@ package com.luckychacha.learnrabbitmq.user;
 
 import java.io.Serializable;
 
+/**
+ * @author leixinxin
+ */
 public class User implements Serializable {
     private String name;
     private String pass;

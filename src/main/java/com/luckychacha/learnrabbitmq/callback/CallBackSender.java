@@ -12,16 +12,16 @@ import java.util.UUID;
 public class CallBackSender implements RabbitTemplate.ConfirmCallback {
 
     @Autowired
-    private RabbitTemplate rabbitTemplatenew;
+    private RabbitTemplate rabbitTemplateNew;
 
     @Transactional(rollbackFor = Exception.class)
     public void send() {
-        this.rabbitTemplatenew.setConfirmCallback(this);
+        this.rabbitTemplateNew.setConfirmCallback(this);
         CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
         String msg = "callback sender: i am provider!!! id:" + correlationData.getId();
         System.out.println(msg);
         System.out.println("callback sender task uuid is :" + correlationData.getId());
-        this.rabbitTemplatenew.convertAndSend("exchange", "topic.messages", msg, correlationData );
+        this.rabbitTemplateNew.convertAndSend("exchange", "topic.messages", msg, correlationData );
     }
 
     @Override

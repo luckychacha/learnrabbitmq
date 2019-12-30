@@ -12,8 +12,8 @@ public class UserSender1 {
 
     public void send() {
         User user = new User();
-        user.setName("名字叫做\\\\\\////啊、");
-        user.setPass("hoho123nxnxnx");
+        user.setName("userName");
+        user.setPass("pass12345");
         System.out.println("sender : name:" + user.getName() + " pass:" + user.getPass());
         this.rabbitTemplate.convertAndSend("user", user);
     }

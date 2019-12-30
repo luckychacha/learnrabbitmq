@@ -1,24 +1,38 @@
 package com.luckychacha.learnrabbitmq.topic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author leixinxin
+ */
+@Slf4j
 @Component
 public class TopicSender {
 
-    @Autowired
     private AmqpTemplate rabbitTemplate;
 
-    public void send() {
-        String msg1 = "i am topic.message msg===";
-        System.out.println("sender1: " + msg1);
-        this.rabbitTemplate.convertAndSend("exchange", "topic.message", msg1);
+    @Autowired
+    public TopicSender(AmqpTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
-        String msg2 = "i am topic.messages msg-----";
-        System.out.println("sender2:" + msg2);
-        //exchange, routingKey
-        this.rabbitTemplate.convertAndSend("exchange", "topic.messages", msg2);
+
+    public void send() {
+        String msg1 = "routingKey: a.orange.rabbit";
+        String msg2 = "routingKey: lazy";
+        String msg3 = "routingKey: lazy.orange.rabbit";
+        log.info("sender: [{}]", msg1);
+        log.info("sender: [{}]", msg2);
+        log.info("sender: [{}]", msg3);
+
+        this.rabbitTemplate.convertAndSend("topicExchange", "a.orange.rabbit", msg1);
+
+        this.rabbitTemplate.convertAndSend("topicExchange", "lazy", msg2);
+
+        this.rabbitTemplate.convertAndSend("topicExchange", "lazy.orange.rabbit", msg3);
 
     }
 

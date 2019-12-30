@@ -1,10 +1,13 @@
 package com.luckychacha.learnrabbitmq.controller;
 
 import com.luckychacha.learnrabbitmq.callback.CallBackSender;
+import com.luckychacha.learnrabbitmq.direct.DirectSender;
 import com.luckychacha.learnrabbitmq.fanout.FanoutSender;
+import com.luckychacha.learnrabbitmq.headers.HeadersSender;
 import com.luckychacha.learnrabbitmq.hello.HelloReceiver1;
 import com.luckychacha.learnrabbitmq.hello.HelloSender1;
 import com.luckychacha.learnrabbitmq.hello.HelloSender2;
+import com.luckychacha.learnrabbitmq.rpc.RpcSender;
 import com.luckychacha.learnrabbitmq.topic.TopicSender;
 import com.luckychacha.learnrabbitmq.user.UserSender1;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +19,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rabbit")
 public class RabbitTest {
 
-    @Autowired
     private HelloSender1 helloSender1;
 
-    @Autowired
     private HelloSender2 helloSender2;
 
-    @Autowired
     private UserSender1 userSender1;
 
-    @Autowired
     private TopicSender topicSender;
 
-    @Autowired
     private FanoutSender fanoutSender;
 
-    @Autowired
+
     private CallBackSender callBackSender;
+
+    private DirectSender directSender;
+
+    private HeadersSender headersSender;
+
+    private RpcSender rpcSender;
+
+    @Autowired
+    public RabbitTest(HelloSender1 helloSender1,
+                      HelloSender2 helloSender2,
+                      UserSender1 userSender1,
+                      TopicSender topicSender,
+                      FanoutSender fanoutSender,
+                      CallBackSender callBackSender,
+                      DirectSender directSender,
+                      HeadersSender headersSender,
+                      RpcSender rpcSender) {
+        this.helloSender1 = helloSender1;
+        this.helloSender2 = helloSender2;
+        this.userSender1 = userSender1;
+        this.topicSender = topicSender;
+        this.fanoutSender = fanoutSender;
+        this.callBackSender = callBackSender;
+        this.directSender = directSender;
+        this.headersSender = headersSender;
+        this.rpcSender = rpcSender;
+    }
     /**
      * oneToOne
      */
@@ -75,9 +100,26 @@ public class RabbitTest {
         topicSender.send();
     }
 
+    @PostMapping("sendDirect")
+    public void sendDirect() {
+        directSender.send();
+    }
+
     @PostMapping("fanout")
     public void sendFanout() {
         fanoutSender.send();
+    }
+
+
+    @PostMapping("sendHeaders")
+    public void sendHeaders() {
+        headersSender.send();
+    }
+
+
+    @PostMapping("sendRpc")
+    public void sendRpc() {
+        rpcSender.send();
     }
 
     @PostMapping("callback")
