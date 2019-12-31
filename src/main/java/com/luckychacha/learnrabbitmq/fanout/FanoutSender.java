@@ -13,7 +13,7 @@ public class FanoutSender {
     public void send() {
         String message = "fanoutSender: hello i am fanoutsender!";
         System.out.println(message);
-        this.rabbitTemplate.convertAndSend("fanoutExchange", "topic.message", message);
+        this.rabbitTemplate.convertAndSend("fanoutExchange", "", message);
     }
 
 }

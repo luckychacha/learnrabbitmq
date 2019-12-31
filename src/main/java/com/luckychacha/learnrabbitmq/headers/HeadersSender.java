@@ -43,15 +43,16 @@ public class HeadersSender {
 
         MessageProperties messageProperties3 = new MessageProperties();
         messageProperties3.setHeader("queueName", "headersQueue1");
-        messageProperties3.setHeader("bindType", "whereAnya");
+        messageProperties3.setHeader("bindType", "whereAny");
         log.info("sender: [{}]", messageProperties);
         Message message3 = new Message("headersQueue3+whereAny".getBytes(StandardCharsets.UTF_8), messageProperties3);
 
         this.rabbitTemplate.convertAndSend("headersExchange", "", message3);
 
         MessageProperties messageProperties4 = new MessageProperties();
-        messageProperties4.setHeader("queueName", "headersQueue3");
-        messageProperties4.setHeader("bindType", "whereAnya");
+        messageProperties4.setHeader("queueName", "???");
+        messageProperties4.setHeader("bindType", "aaa");
+        messageProperties4.setHeader("test", "aaa");
         log.info("sender: [{}]", messageProperties);
         Message message4 = new Message("headersQueue4+whereAny".getBytes(StandardCharsets.UTF_8), messageProperties4);
 

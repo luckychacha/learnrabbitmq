@@ -34,6 +34,7 @@ public class HeadersConfig {
         Map<String,Object> map = new HashMap<>();
         map.put("queueName","headersQueue1");
         map.put("bindType","whereAll");
+        map.put("test","aaa");
         return BindingBuilder.bind(headersQueue1).to(headersExchange).whereAll(map).match();
     }
 
@@ -42,6 +43,7 @@ public class HeadersConfig {
         Map<String,Object> map = new HashMap<>();
         map.put("queueName","headersQueue2");
         map.put("bindType","whereAny");
+        map.put("test","aaa");
         return BindingBuilder.bind(headersQueue2).to(headersExchange).whereAny(map).match();
 
     }
