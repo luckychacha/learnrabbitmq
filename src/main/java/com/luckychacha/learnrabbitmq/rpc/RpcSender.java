@@ -20,13 +20,13 @@ public class RpcSender {
     @Autowired
     private DirectExchange exchange;
 
-    int start = 1;
+    int start = 5;
 
     public void send() {
         System.out.println(" [x] Requesting fib(" + start + ")");
         System.out.println(exchange.getName());
         Integer response = (Integer) rabbitTemplateNew.convertSendAndReceive
-                (exchange.getName(), "rpc", start++);
+                (exchange.getName(), "rpc", start);
         System.out.println(" [.] Got '" + response + "'");
     }
 }

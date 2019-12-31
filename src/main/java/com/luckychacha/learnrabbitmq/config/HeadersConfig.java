@@ -1,4 +1,4 @@
-package com.luckychacha.learnrabbitmq;
+package com.luckychacha.learnrabbitmq.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;

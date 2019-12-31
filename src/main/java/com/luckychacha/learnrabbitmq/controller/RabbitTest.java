@@ -2,6 +2,7 @@ package com.luckychacha.learnrabbitmq.controller;
 
 import com.luckychacha.learnrabbitmq.callback.CallBackSender;
 import com.luckychacha.learnrabbitmq.direct.DirectSender;
+import com.luckychacha.learnrabbitmq.dlx.DlxSender;
 import com.luckychacha.learnrabbitmq.fanout.FanoutSender;
 import com.luckychacha.learnrabbitmq.headers.HeadersSender;
 import com.luckychacha.learnrabbitmq.hello.HelloReceiver1;
@@ -38,6 +39,8 @@ public class RabbitTest {
 
     private RpcSender rpcSender;
 
+    private DlxSender dlxSender;
+
     @Autowired
     public RabbitTest(HelloSender1 helloSender1,
                       HelloSender2 helloSender2,
@@ -47,7 +50,8 @@ public class RabbitTest {
                       CallBackSender callBackSender,
                       DirectSender directSender,
                       HeadersSender headersSender,
-                      RpcSender rpcSender) {
+                      RpcSender rpcSender,
+                      DlxSender dlxSender) {
         this.helloSender1 = helloSender1;
         this.helloSender2 = helloSender2;
         this.userSender1 = userSender1;
@@ -57,6 +61,7 @@ public class RabbitTest {
         this.directSender = directSender;
         this.headersSender = headersSender;
         this.rpcSender = rpcSender;
+        this.dlxSender = dlxSender;
     }
     /**
      * oneToOne
@@ -116,10 +121,15 @@ public class RabbitTest {
         headersSender.send();
     }
 
-
     @PostMapping("sendRpc")
     public void sendRpc() {
         rpcSender.send();
+    }
+
+
+    @PostMapping("sendDlx")
+    public void sendDlx() {
+        dlxSender.send("test", 5, "queue1");
     }
 
     @PostMapping("callback")

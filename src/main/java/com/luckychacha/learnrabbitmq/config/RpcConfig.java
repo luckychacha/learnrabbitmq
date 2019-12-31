@@ -1,4 +1,4 @@
-package com.luckychacha.learnrabbitmq;
+package com.luckychacha.learnrabbitmq.config;
 
 import com.luckychacha.learnrabbitmq.rpc.RpcSender;
 import com.luckychacha.learnrabbitmq.rpc.RpcServer;

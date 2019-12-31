@@ -1,4 +1,4 @@
-package com.luckychacha.learnrabbitmq;
+package com.luckychacha.learnrabbitmq.config;
 
 import com.luckychacha.learnrabbitmq.topic.TopicSender;
 import com.rabbitmq.client.Channel;
@@ -55,8 +55,8 @@ public class RabbitConfig {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public RabbitTemplate rabbitTemplateNew() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
-//        rabbitTemplate.setChannelTransacted(false);
-        rabbitTemplate.setChannelTransacted(true);
+        rabbitTemplate.setChannelTransacted(false);
+//        rabbitTemplate.setChannelTransacted(true);
         return rabbitTemplate;
     }
 
@@ -70,6 +70,7 @@ public class RabbitConfig {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+//        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
         return factory;
     }
 
