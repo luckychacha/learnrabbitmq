@@ -29,6 +29,8 @@ public class HeadersSender {
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.setHeader("queueName", "headersQueue1");
         messageProperties.setHeader("bindType", "whereAll");
+        messageProperties.setHeader("test", "aaa");
+
         log.info("sender: [{}]", messageProperties);
         Message message = new Message("headersQueue1+whereAll".getBytes(), messageProperties);
 
@@ -37,6 +39,8 @@ public class HeadersSender {
         MessageProperties messageProperties2 = new MessageProperties();
         messageProperties2.setHeader("queueName", "headersQueue2");
         messageProperties2.setHeader("bindType", "whereAny");
+        messageProperties2.setHeader("test", "aaa");
+
         log.info("sender: [{}]", messageProperties);
         Message message2 = new Message("headersQueue2+whereAny".getBytes(StandardCharsets.UTF_8), messageProperties2);
         this.rabbitTemplate.convertAndSend("headersExchange", "", message2);
@@ -44,6 +48,8 @@ public class HeadersSender {
         MessageProperties messageProperties3 = new MessageProperties();
         messageProperties3.setHeader("queueName", "headersQueue1");
         messageProperties3.setHeader("bindType", "whereAny");
+        messageProperties3.setHeader("test", "aaa");
+
         log.info("sender: [{}]", messageProperties);
         Message message3 = new Message("headersQueue3+whereAny".getBytes(StandardCharsets.UTF_8), messageProperties3);
 
