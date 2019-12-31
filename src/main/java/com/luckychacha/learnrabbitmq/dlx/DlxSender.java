@@ -34,7 +34,7 @@ public class DlxSender {
     }
 
 
-    public void send(String msg, long time, String delayQueueName) {
+    public void send(String msg, long time, String delayQueueRoutingKey) {
         //rabbit默认为毫秒级
         long times = time * 1000;
         MessagePostProcessor processor = new MessagePostProcessor() {
@@ -45,7 +45,7 @@ public class DlxSender {
                 return message;
             }
         };
-        String info = msg + ":" + delayQueueName;
+        String info = msg + ":" + delayQueueRoutingKey;
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         log.info("生产者：写入DLX队列，[{}-{}]", now, info);
         this.rabbitTemplate.convertAndSend(
